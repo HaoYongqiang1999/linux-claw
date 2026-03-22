@@ -2,7 +2,8 @@
 
 ## 项目概述
 Linux Claw是一个基于AI的智能Linux系统自动化工具，它利用大语言模型和MCP（Model Control Protocol）技术，将自然语言指令转换为具体的shell命令并在远程服务器上执行。系统采用Spring Boot框架构建，包含两个主要微服务：主应用服务和SSH执行服务。
-
+## demo
+![img.png](imgs/img.png)
 ## 架构设计
 ## 核心功能
 1. **自然语言理解**：用户可以通过自然语言描述需求
