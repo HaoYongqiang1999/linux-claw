@@ -3,14 +3,17 @@ package io.github.haoyongqiang1999.controller;
 import cn.hutool.core.lang.UUID;
 import io.github.haoyongqiang1999.agent.AnalyzerReactAgent;
 import io.github.haoyongqiang1999.agent.DesignerReactAgent;
+import io.github.haoyongqiang1999.service.CommonService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
-import java.util.Timer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,21 +24,42 @@ public class WorkController {
 
     @Resource
     DesignerReactAgent designerReactAgent;
+    @Autowired
+    CommonService commonService;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 
     @GetMapping("/work")
-    public Flux<String> work(@RequestParam(name = "msg",defaultValue="你是谁") String msg) {
+    public Flux<String> work(@RequestParam(name = "msg",defaultValue="你是谁") String msg) throws Exception {
         Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
         String threadId = UUID.randomUUID().toString();
-        executorService.submit(() -> {
-            try {
-                analyzerReactAgent.analyzeForUser(msg, threadId, sink);
-            } catch (Exception e) {
-                sink.tryEmitError(e);
-            }
-        });
+//        executorService.submit(() -> {
+//            try {
+//
+//            } catch (Exception e) {
+//                sink.tryEmitError(e);
+//            }
+//        });
+        analyzerReactAgent.analyzeForUser(msg, threadId, sink);
         return sink.asFlux();
+    }
+
+    @GetMapping("/testForALS")
+    public String testFullGc(@RequestParam int count) {
+        try {
+            commonService.testForALS(count);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return "error";
+        }
+        return "success";
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        List<String> list = new ArrayList<>();
+        return "hello world";
     }
 }
