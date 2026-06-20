@@ -19,7 +19,8 @@ public class AgentsConfig
     public DashScopeApi dashScopeApi()
     {
         DashScopeApi dashScopeApi = DashScopeApi.builder()
-                .apiKey(System.getenv("aliQwen-api"))
+//                .apiKey(System.getenv("aliQwen-api"))
+                .apiKey("sk-qwencom-qwen-plus-v1.5-2023-07-01-qwen-plus-v1.5-2023-07-01-qwen-plus-v1.5-2023-07-01")
                 .build();
         return dashScopeApi;
     }
